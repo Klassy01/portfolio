@@ -1,0 +1,246 @@
+/* about.css - Professional Card Style with Consistent Background */
+
+/* Base Styles */
+.about-section {
+  padding: 100px 0;
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  background: linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%);
+  justify-content: center; /* Center content horizontally */
+}
+
+/* Content Container */
+.about-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* White Card */
+.about-content {
+  background: rgba(227, 227, 230, 0.95);
+  border-radius: 20px;
+  padding: 60px;
+  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.2);
+  backdrop-filter: blur(10px);
+  position: relative;
+  overflow: hidden;
+  z-index: 2;
+  width: 100%;
+  max-width: 900px;
+}
+
+/* Decorative Elements */
+.about-content::before {
+  content: '';
+  position: absolute;
+  top: -50px;
+  right: -50px;
+  width: 200px;
+  height: 200px;
+  background: rgba(79, 195, 247, 0.1);
+  border-radius: 50%;
+  z-index: -1;
+}
+
+.about-content::after {
+  content: '';
+  position: absolute;
+  bottom: -80px;
+  left: -80px;
+  width: 300px;
+  height: 300px;
+  background: rgba(30, 60, 114, 0.1);
+  border-radius: 50%;
+  z-index: -1;
+}
+
+/* Typography */
+.section-title {
+  font-size: clamp(2rem, 5vw, 2.8rem);
+  font-weight: 700;
+  color: #1e3c72;
+  margin-bottom: 25px;
+  text-align: center;
+  position: relative;
+}
+
+.section-title::after {
+  content: '';
+  display: block;
+  width: 80px;
+  height: 4px;
+  background: linear-gradient(to right, #4fc3f7, #1e3c72);
+  margin: 15px auto;
+  border-radius: 2px;
+}
+
+.about-text {
+  color: #4a5568;
+  font-size: 1.1rem;
+  line-height: 1.8;
+  max-width: 900px;
+  margin: 0 auto 30px;
+}
+
+.highlight {
+  color: #4fc3f7;
+  font-weight: 600;
+}
+
+/* Skills Grid */
+.skills-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 30px;
+  margin: 40px 0;
+}
+
+.skills-column {
+  background: rgba(249, 255, 249, 0.8);
+  padding: 25px;
+  border-radius: 15px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+}
+
+.skills-heading {
+  font-size: 1.3rem;
+  color: #1e3c72;
+  margin-bottom: 20px;
+  position: relative;
+  padding-bottom: 10px;
+}
+
+.skills-heading::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 50px;
+  height: 3px;
+  background: linear-gradient(to right, #4fc3f7, #1e3c72);
+}
+
+.skills-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.skills-list li {
+  padding: 12px 0;
+  border-bottom: 1px solid rgba(30, 60, 114, 0.1);
+  display: flex;
+  align-items: center;
+}
+
+.skills-list li:last-child {
+  border-bottom: none;
+}
+
+.skills-list li::before {
+  content: '▹';
+  color: #4fc3f7;
+  margin-right: 10px;
+}
+
+/* CTA Button */
+.cta-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 15px 35px;
+  background: linear-gradient(to right, #4fc3f7, #1e3c72);
+  color: white;
+  border: none;
+  border-radius: 50px;
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 10px 20px rgba(79, 195, 247, 0.3);
+  margin: 30px auto 0;
+  text-decoration: none;
+}
+
+.cta-button:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 15px 30px rgba(79, 195, 247, 0.4);
+}
+
+/* Responsive Design */
+
+/* Large Tablets and Below (992px and below) */
+@media (max-width: 992px) {
+  .about-section {
+    padding: 80px 0;
+  }
+
+  .about-content {
+    padding: 50px;
+  }
+
+  .section-title {
+    font-size: clamp(1.8rem, 5vw, 2.5rem);
+  }
+
+  .cta-button {
+    padding: 14px 30px;
+  }
+}
+
+/* Tablets and Small Devices (768px and below) */
+@media (max-width: 768px) {
+  .about-content {
+    padding: 40px;
+  }
+
+  .skills-container {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  .cta-button {
+    padding: 12px 28px;
+  }
+
+  .section-title {
+    font-size: clamp(1.6rem, 5vw, 2.3rem);
+  }
+
+  .about-text {
+    font-size: 1rem;
+  }
+}
+
+/* Small Mobile Devices (576px and below) */
+@media (max-width: 576px) {
+  .about-section {
+    padding: 60px 15px;
+  }
+
+  .about-content {
+    padding: 30px 20px;
+    border-radius: 15px;
+  }
+
+  .cta-button {
+    width: 100%;
+    padding: 14px;
+  }
+
+  .section-title {
+    font-size: clamp(1.4rem, 5vw, 2rem);
+  }
+
+  .about-text {
+    font-size: 0.95rem;
+    line-height: 1.6;
+  }
+}
