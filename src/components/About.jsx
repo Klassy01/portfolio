@@ -1,66 +1,83 @@
 import React from 'react';
-import '../styles/about.css';
-import { FaFileDownload } from 'react-icons/fa';
+import { FaLinkedinIn, FaGithub, FaInstagram, FaDownload } from 'react-icons/fa';
+import resumePDF from '../assets/David_Resume.pdf';
 
 const About = () => {
   const handleDownload = () => {
-    // Add your download CV functionality here
-    const pdfUrl = "/path/to/your/resume.pdf"; // Update this path
     const link = document.createElement('a');
-    link.href = pdfUrl;
-    link.download = 'YourName_Resume.pdf'; // Update with your name
+    link.href = resumePDF;
+    link.download = 'David_Jayaraj_Resume.pdf';
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
   };
 
   return (
-    <section id="about" className="about-section">
-      <div className="about-container"> {/* Changed from container to about-container */}
-        <div className="about-content">
-          <h2 className="section-title">
-            <span className="title-highlight">About</span> Me
-          </h2>
-          
-          <div className="about-text">
-            <p className="intro-text">
-              I'm a <span className="highlight">Full Stack Developer</span> with expertise in both frontend and backend technologies, 
-              dedicated to crafting high-performance web applications with exceptional user experiences.
-            </p>
-            
-            <div className="skills-container">
-              <div className="skills-column">
-                <h3 className="skills-heading">Frontend Expertise</h3>
-                <ul className="skills-list">
-                  <li>React.js & Next.js</li>
-                  <li>JavaScript</li>
-                  <li>HTML & CSS</li>
-                  <li>Responsive Design</li>
-                  <li>Typescript</li>
-                </ul>
-              </div>
-              
-              <div className="skills-column">
-                <h3 className="skills-heading">Backend Expertise</h3>
-                <ul className="skills-list">
-                  <li>Node.js & Express</li>
-                  <li>Python & Django</li>
-                  <li>RESTful APIs</li>
-                  <li>Database Design (SQL/NoSQL)</li>
-                  <li>Authentication (JWT, OAuth)</li>
-                </ul>
-              </div>
-            </div>
-            
-            <p className="closing-text">
-              With a strong foundation in both client and server-side development, I bridge the gap between 
-              beautiful interfaces and robust backend systems. My approach combines technical excellence with 
-              thoughtful user experience design.
-            </p>
-          </div>
-          
-          <button onClick={handleDownload} className="cta-button">
-            <FaFileDownload className="button-icon" />
+    <section
+      id="about"
+      className="py-20 text-gray-100"
+      style={{
+        background: 'linear-gradient(60deg, #24243e)',
+        backgroundSize: '400% 400%',
+        animation: 'gradientAnimation 18s ease infinite',
+      }}
+    >
+      <div className="container mx-auto px-6 max-w-3xl">
+        <h2 className="text-4xl font-semibold mb-6 text-center">About Me</h2>
+
+        <p className="text-lg leading-relaxed mb-6 text-justify">
+          I am an <strong>Aspiring Full Stack Developer and AI Engineer</strong> with a solid foundation
+          in software development, data analytics, and machine learning. I’m passionate about
+          building <strong>intelligent, scalable, and user-centric systems</strong> that address real-world
+          challenges through technology.
+        </p>
+
+        <p className="text-lg leading-relaxed mb-6 text-justify">
+          With hands-on experience in <strong>data visualization, predictive modeling, and AI-integrated
+          platforms</strong>, I've developed solutions across domains including educational tools,
+          content moderation, and real-time applications. I'm proficient in <strong>SQL, Python, and
+          JavaScript</strong>, and I enjoy working across both frontend and backend stacks to deliver
+          cohesive, high-performing systems.
+        </p>
+
+        {/* Social Links */}
+        <div className="flex justify-center items-center gap-6 text-2xl mb-8">
+          <a
+            href="https://www.linkedin.com/in/davidjayaraja01"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="hover:text-blue-400 transition-colors"
+            aria-label="LinkedIn"
+          >
+            <FaLinkedinIn />
+          </a>
+          <a
+            href="https://github.com/Klassy01"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="hover:text-gray-300 transition-colors"
+            aria-label="GitHub"
+          >
+            <FaGithub />
+          </a>
+          <a
+            href="https://www.instagram.com/david_jayaraj_01"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="hover:text-pink-400 transition-colors"
+            aria-label="Instagram"
+          >
+            <FaInstagram />
+          </a>
+        </div>
+
+        {/* Resume Download Button */}
+        <div className="flex justify-center mb-8">
+          <button
+            onClick={handleDownload}
+            className="inline-flex items-center px-6 py-3 bg-blue-600 text-white font-medium rounded-2xl shadow-md hover:bg-blue-700 transition"
+          >
+            <FaDownload className="mr-2" />
             Download Resume
           </button>
         </div>
