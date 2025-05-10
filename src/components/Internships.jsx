@@ -33,7 +33,7 @@ const Internships = () => {
               Designed and optimized UI/UX to enhance user experience and engagement. Implemented Firebase for authentication, real-time database, and cloud messaging.
             </p>
             <a
-              href="path/to/certificate1.pdf"
+              href="/src/assets/david nandha infotech.pdf"
               target="_blank"
               className="inline-block mt-6 px-6 py-2 bg-cyan-500 text-white rounded-lg hover:bg-cyan-600 transition-colors"
             >
