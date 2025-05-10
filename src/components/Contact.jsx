@@ -62,7 +62,7 @@ const Contact = () => {
         const formData = new FormData(form);
         setLoadingState(true);
 
-        fetch('https://hlomail-backend.onrender.com/v1/contact-mail', {
+        fetch('https://api.hlomail.in/v1/contact-mail', {
           method: 'POST',
           body: formData,
         })
@@ -179,7 +179,7 @@ const Contact = () => {
             type="text"
             id="api_key"
             name="api_key"
-            value="5c9ded41b7e024534054f166902dedc9"
+            value="64480decb173c0683c0157da2f989015"
             style={{ display: 'none' }}
             readOnly
           />
