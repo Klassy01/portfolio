@@ -1,12 +1,12 @@
 import React from 'react';
 import { FaLinkedinIn, FaGithub, FaInstagram, FaDownload } from 'react-icons/fa';
-import resumePDF from '../assets/David_Resume.pdf';
+import resumePDF from '../assets/DJ_Resume.pdf';
 
 const About = () => {
   const handleDownload = () => {
     const link = document.createElement('a');
     link.href = resumePDF;
-    link.download = 'David_Jayaraj_Resume.pdf';
+    link.download = 'DJ_Resume.pdf';
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
