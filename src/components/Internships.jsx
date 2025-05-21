@@ -28,7 +28,7 @@ const Internships = () => {
               Designed and optimized UI/UX to enhance user experience and engagement. Implemented Firebase for authentication, real-time database, and cloud messaging.
             </p>
             <a
-              href="/public/assets/david-nandha-infotech.pdf"
+              href="/assets/david-nandha-infotech.pdf"
               target="_blank"
               rel="noopener noreferrer"
               className="mt-6 inline-block text-cyan-400 font-medium hover:underline hover:text-cyan-300 transition-colors"
@@ -46,7 +46,7 @@ const Internships = () => {
               Provided actionable recommendations based on statistical findings and machine learning techniques. Collaborated with our team.
             </p>
             <a
-              href="/public/assets/YBI.pdf"
+              href="/assets/YBI.pdf"
               target="_blank"
               rel="noopener noreferrer"
               className="mt-6 inline-block text-cyan-400 font-medium hover:underline hover:text-cyan-300 transition-colors"
@@ -64,7 +64,7 @@ const Internships = () => {
               Applied Python and Excel to preprocess data, perform statistical analysis, and generate meaningful reports that supported internal decision-making.
             </p>
             <a
-              href="/public/assets/Codtech.pdf"
+              href="/assets/Codtech.pdf"
               target="_blank"
               rel="noopener noreferrer"
               className="mt-6 inline-block text-cyan-400 font-medium hover:underline hover:text-cyan-300 transition-colors"
