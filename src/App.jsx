@@ -8,7 +8,7 @@ import Skills from './components/Skills';
 import Internships from './components/Internships';
 import Projects from './components/Projects';
 import Contact from './components/Contact';
-
+import Footer from './components/Footer'; // ✅ Add this
 
 function App() {
   return (
@@ -20,6 +20,7 @@ function App() {
       <Internships />
       <Projects />
       <Contact />
+      <Footer /> {/* ✅ Add the MIT License section here */}
     </div>
   );
 }
