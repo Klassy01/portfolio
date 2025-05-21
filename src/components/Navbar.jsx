@@ -22,7 +22,18 @@ const Navbar = () => {
     'relative text-white hover:text-cyan-400 transition duration-300 hover:after:w-full after:content-[""] after:absolute after:left-0 after:-bottom-1 after:w-0 after:h-[2px] after:bg-cyan-400 after:transition-all after:duration-300';
 
   return (
-    <nav className={`fixed top-0 w-full z-10 transition-all duration-300 ${scrolled ? 'bg-gray-800 shadow-lg' : 'bg-transparent'}`}>
+    <nav
+      className={`fixed top-0 w-full z-10 transition-all duration-300 ${scrolled ? 'bg-gray-800 shadow-lg' : 'bg-transparent'}`}
+      style={{
+        background: `
+          radial-gradient(circle at 20% 30%, rgba(255, 0, 100, 0.15), transparent 40%),
+          radial-gradient(circle at 80% 70%, rgba(0, 255, 200, 0.15), transparent 40%),
+          radial-gradient(circle at 50% 50%, rgba(0, 100, 255, 0.1), transparent 50%),
+          #000000
+        `,
+        backgroundBlendMode: 'screen',
+      }}
+    >
       <div className="container mx-auto px-6 py-4 flex justify-between items-center">
         <a href="#home" className="text-2xl font-bold text-white">David Jayaraj</a>
 

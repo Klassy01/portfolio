@@ -5,6 +5,9 @@ import {
   FaMapMarkerAlt,
   FaGithub,
   FaLinkedinIn,
+  FaInstagram,
+  FaWhatsapp,
+  FaFacebookF,
 } from 'react-icons/fa';
 
 const Contact = () => {
@@ -56,7 +59,7 @@ const Contact = () => {
     };
 
     if (form) {
-      form.addEventListener('submit', (e) => {
+      const submitHandler = (e) => {
         e.preventDefault();
 
         const formData = new FormData(form);
@@ -82,13 +85,14 @@ const Contact = () => {
             setLoadingState(false);
             setFormSubmitted(true);
           });
-      });
-    }
+      };
 
-    // Cleanup
-    return () => {
-      if (form) form.removeEventListener('submit', () => {});
-    };
+      form.addEventListener('submit', submitHandler);
+
+      return () => {
+        form.removeEventListener('submit', submitHandler);
+      };
+    }
   }, []);
 
   const handleInputChange = (e) => {
@@ -104,21 +108,15 @@ const Contact = () => {
       id="contact"
       className="py-20 px-4 text-white"
       style={{
-        background: 'linear-gradient(60deg, #24243e)',
-        backgroundSize: '400% 400%',
-        animation: 'gradientAnimation 18s ease infinite',
+        background: `
+          radial-gradient(circle at 20% 30%, rgba(255, 0, 100, 0.15), transparent 40%),
+          radial-gradient(circle at 80% 70%, rgba(0, 255, 200, 0.15), transparent 40%),
+          radial-gradient(circle at 50% 50%, rgba(0, 100, 255, 0.1), transparent 50%),
+          #000000
+        `,
+        backgroundBlendMode: 'screen',
       }}
     >
-      <style>
-        {`
-          @keyframes gradientAnimation {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-          }
-        `}
-      </style>
-
       <h2 className="text-4xl font-bold text-center mb-12 text-[#00d9ff]">Get In Touch</h2>
 
       <div className="container mx-auto grid grid-cols-1 md:grid-cols-2 gap-10">
@@ -146,12 +144,12 @@ const Contact = () => {
             </div>
           </div>
 
-          <div className="flex gap-5 pt-6">
+          <div className="flex flex-wrap gap-5 pt-6 text-2xl text-[#00ffc3]">
             <a
               href="https://github.com/Klassy01"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-[#00ffc3] hover:text-white text-2xl"
+              className="hover:text-white"
               aria-label="GitHub"
             >
               <FaGithub />
@@ -160,10 +158,37 @@ const Contact = () => {
               href="https://linkedin.com/in/davidjayaraja01"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-[#00ffc3] hover:text-white text-2xl"
+              className="hover:text-white"
               aria-label="LinkedIn"
             >
               <FaLinkedinIn />
+            </a>
+            <a
+              href="https://instagram.com/yourusername"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:text-white"
+              aria-label="Instagram"
+            >
+              <FaInstagram />
+            </a>
+            <a
+              href="https://wa.me/919840488355"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:text-white"
+              aria-label="WhatsApp"
+            >
+              <FaWhatsapp />
+            </a>
+            <a
+              href="https://facebook.com/klassy.dj"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:text-white"
+              aria-label="Facebook"
+            >
+              <FaFacebookF />
             </a>
           </div>
         </div>
@@ -174,7 +199,6 @@ const Contact = () => {
           className="bg-[#1c1b2f] p-8 rounded-2xl shadow-xl space-y-6"
           id="contactForm"
         >
-          {/* Hidden API Key */}
           <input
             type="text"
             id="api_key"
@@ -219,7 +243,12 @@ const Contact = () => {
             onChange={handleInputChange}
             className="w-full px-4 py-3 bg-black border border-[#00d9ff] text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-[#00d9ff]"
           />
-          <div ref={statusRef} id="formStatus" className="text-sm text-green-400" style={{ display: 'none' }}></div>
+          <div
+            ref={statusRef}
+            id="formStatus"
+            className="text-sm text-green-400"
+            style={{ display: 'none' }}
+          ></div>
           <button
             type="submit"
             ref={submitButtonRef}

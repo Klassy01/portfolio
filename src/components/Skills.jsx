@@ -1,10 +1,17 @@
 import React, { forwardRef } from 'react';
-import { FaLaptopCode, FaCogs, FaTools, FaDatabase, FaMobileAlt, FaWrench } from 'react-icons/fa';
+import {
+  FaLaptopCode,
+  FaCogs,
+  FaTools,
+  FaDatabase,
+  FaMobileAlt,
+  FaWrench,
+} from 'react-icons/fa';
 
 const skillsData = [
   {
     title: 'Frontend',
-    icon: <FaLaptopCode className="text-3xl" />,
+    icon: <FaLaptopCode className="text-2xl text-cyan-400" />,
     skills: [
       { name: 'HTML', level: 80 },
       { name: 'CSS', level: 85 },
@@ -15,7 +22,7 @@ const skillsData = [
   },
   {
     title: 'Backend',
-    icon: <FaCogs className="text-3xl" />,
+    icon: <FaCogs className="text-2xl text-cyan-400" />,
     skills: [
       { name: 'Python', level: 80 },
       { name: 'PHP', level: 60 },
@@ -25,7 +32,7 @@ const skillsData = [
   },
   {
     title: 'Frameworks',
-    icon: <FaTools className="text-3xl" />,
+    icon: <FaTools className="text-2xl text-cyan-400" />,
     skills: [
       { name: 'Django', level: 70 },
       { name: 'Flask', level: 75 },
@@ -36,7 +43,7 @@ const skillsData = [
   },
   {
     title: 'Databases',
-    icon: <FaDatabase className="text-3xl" />,
+    icon: <FaDatabase className="text-2xl text-cyan-400" />,
     skills: [
       { name: 'MySQL', level: 80 },
       { name: 'MongoDB', level: 75 },
@@ -46,7 +53,7 @@ const skillsData = [
   },
   {
     title: 'App Development',
-    icon: <FaMobileAlt className="text-3xl" />,
+    icon: <FaMobileAlt className="text-2xl text-cyan-400" />,
     skills: [
       { name: 'Flutter', level: 60 },
       { name: 'Dart', level: 65 },
@@ -54,7 +61,7 @@ const skillsData = [
   },
   {
     title: 'Tools',
-    icon: <FaWrench className="text-3xl" />,
+    icon: <FaWrench className="text-2xl text-cyan-400" />,
     skills: [
       { name: 'Postman', level: 70 },
       { name: 'VS Code', level: 95 },
@@ -63,16 +70,16 @@ const skillsData = [
 ];
 
 const SkillBar = ({ name, level }) => (
-  <div className="skill-bar mb-6">
-    <div className="flex justify-between items-center mb-2">
-      <span className="text-sm font-medium text-gray-300">{name}</span>
-      <span className="text-xs font-semibold text-cyan-400">{level}%</span>
+  <div>
+    <div className="flex justify-between text-sm text-gray-200 mb-1">
+      <span>{name}</span>
+      <span className="text-cyan-300 font-semibold">{level}%</span>
     </div>
-    <div className="w-full bg-gray-700 rounded-full h-3">
+    <div className="w-full h-3 bg-gray-700 rounded-full relative overflow-hidden">
       <div
-        className="bg-gradient-to-r from-blue-500 to-cyan-400 h-3 rounded-full"
+        className="absolute left-0 top-0 h-full bg-gradient-to-r from-cyan-400 to-blue-500 animate-fill"
         style={{ width: `${level}%` }}
-      ></div>
+      />
     </div>
   </div>
 );
@@ -84,52 +91,55 @@ const Skills = forwardRef((props, ref) => {
       id="skills"
       className="py-20 px-6 lg:px-16 text-white"
       style={{
-        background: 'linear-gradient(60deg, #0f0c29)',
-        backgroundSize: '400% 400%',
-        animation: 'gradientAnimation 18s ease infinite',
+        background: `
+          radial-gradient(circle at 20% 30%, rgba(255, 0, 100, 0.15), transparent 40%),
+          radial-gradient(circle at 80% 70%, rgba(0, 255, 200, 0.15), transparent 40%),
+          radial-gradient(circle at 50% 50%, rgba(0, 100, 255, 0.1), transparent 50%),
+          #000000
+        `,
+        backgroundBlendMode: 'screen',
       }}
     >
       <style>
         {`
-          @keyframes gradientAnimation {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
+          @keyframes fill {
+            0% { width: 0; }
+            100% { width: var(--bar-width); }
+          }
+          .animate-fill {
+            animation: fill 1.8s ease-out forwards;
           }
         `}
       </style>
 
-      <div className="max-w-screen-xl mx-auto">
-        <div className="text-center mb-16">
-          <h2 className="text-4xl font-extrabold text-white mb-4">
-            Technical <span className="text-cyan-400">Proficiency</span>
-          </h2>
-          <p className="text-lg text-gray-300 max-w-2xl mx-auto">
-            Here are the technologies I work with and my proficiency level in each
-          </p>
-        </div>
+      <div className="max-w-7xl mx-auto text-center mb-12">
+        <h2 className="text-4xl font-bold text-white mb-4 drop-shadow-lg">
+          My <span className="text-cyan-400">Skillset</span>
+        </h2>
+        <p className="text-gray-300 text-lg max-w-2xl mx-auto drop-shadow-sm">
+          A visual overview of the tools and technologies I’ve mastered
+        </p>
+      </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-12">
-          {skillsData.map((group, idx) => (
-            <div
-              key={idx}
-              className="bg-gray-800 bg-opacity-70 rounded-2xl shadow-lg hover:shadow-2xl transition-shadow duration-300 p-8 border border-gray-700 skill-box"
-            >
-              <div className="flex items-center mb-6">
-                <span className="mr-4">{group.icon}</span>
-                <h3 className="text-2xl font-semibold text-white flex items-center">
-                  {group.title}
-                  <span className="ml-2 text-cyan-400">{group.skills.length} Skills</span>
-                </h3>
-              </div>
-              <div className="space-y-6">
-                {group.skills.map((skill, i) => (
-                  <SkillBar key={i} name={skill.name} level={skill.level} />
-                ))}
-              </div>
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10">
+        {skillsData.map((group, idx) => (
+          <div
+            key={idx}
+            className="bg-white/5 backdrop-blur-md border border-white/10 rounded-xl p-6 shadow-md hover:shadow-cyan-500/30 transition duration-300"
+          >
+            <div className="flex items-center gap-4 mb-4">
+              {group.icon}
+              <h3 className="text-xl font-semibold text-white">
+                {group.title}
+              </h3>
             </div>
-          ))}
-        </div>
+            <div className="space-y-4">
+              {group.skills.map((skill, i) => (
+                <SkillBar key={i} name={skill.name} level={skill.level} />
+              ))}
+            </div>
+          </div>
+        ))}
       </div>
     </section>
   );
