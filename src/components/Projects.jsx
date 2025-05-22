@@ -40,24 +40,34 @@ const Projects = () => {
   return (
     <section
       id="projects"
-      className="py-20 text-white"
+      className="py-20 text-white min-h-screen flex flex-col items-center justify-center"
       style={{
-        background: `
-          radial-gradient(circle at 20% 30%, rgba(255, 0, 100, 0.15), transparent 40%),
-          radial-gradient(circle at 80% 70%, rgba(0, 255, 200, 0.15), transparent 40%),
-          radial-gradient(circle at 50% 50%, rgba(0, 100, 255, 0.1), transparent 50%),
-          #000000
-        `,
+        backgroundColor: '#0a0a0a',
+        backgroundImage:
+          'repeating-linear-gradient(0deg, rgba(0,255,255,0.1), rgba(0,255,255,0.1) 1px, transparent 1px, transparent 40px), repeating-linear-gradient(90deg, rgba(0,255,255,0.1), rgba(0,255,255,0.1) 1px, transparent 1px, transparent 40px)',
+        backgroundSize: '40px 40px',
         backgroundBlendMode: 'screen',
       }}
     >
-      <h2 className="text-4xl font-bold text-center text-white mb-16">Latest Projects</h2>
+      <h2 className="text-4xl font-bold text-center mb-16">Latest Projects</h2>
 
       <div className="container mx-auto px-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10">
         {projects.map((project, index) => (
-          <div
+          <article
             key={index}
-            className="bg-gray-900 bg-opacity-70 rounded-2xl shadow-md border border-gray-700 transform transition duration-300 p-6 flex flex-col justify-between hover:scale-105 hover:border-cyan-400 hover:shadow-[0_0_15px_0_rgba(0,255,255,0.5)]"
+            className="
+              rounded-2xl 
+              border border-white/30 
+              bg-white/10 
+              backdrop-blur-md 
+              shadow-md 
+              transition-transform duration-300 
+              p-6 flex flex-col justify-between
+              hover:scale-105
+              hover:border-cyan-400 
+              hover:bg-white/20
+              hover:shadow-[0_0_20px_0_rgba(0,255,255,0.6)]
+            "
           >
             <div>
               <h3 className="text-2xl font-semibold text-cyan-300 mb-4">{project.title}</h3>
@@ -69,15 +79,14 @@ const Projects = () => {
               </ul>
             </div>
 
-            {/* GitHub Link */}
             {project.github && (
               <a
                 href={project.github}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center text-cyan-400 hover:text-cyan-300 hover:drop-shadow-[0_0_5px_rgba(0,255,255,0.6)] transition-all duration-300 font-semibold"
+                aria-label={`View ${project.title} on GitHub`}
               >
-                {/* GitHub SVG Icon */}
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   className="h-6 w-6 mr-2"
@@ -94,7 +103,7 @@ const Projects = () => {
                 View on GitHub
               </a>
             )}
-          </div>
+          </article>
         ))}
       </div>
     </section>

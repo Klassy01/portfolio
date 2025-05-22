@@ -1,12 +1,4 @@
 import React from "react";
-import {
-  FaLinkedinIn,
-  FaGithub,
-  FaInstagram,
-  FaDownload,
-  FaFacebookF,
-  FaWhatsapp,
-} from "react-icons/fa";
 import resumePDF from "../assets/DJ_Resume.pdf";
 
 const About = () => {
@@ -22,15 +14,12 @@ const About = () => {
   return (
     <section
       id="about"
-      className="py-20 text-gray-100"
+      className="min-h-screen flex items-center justify-center text-white"
       style={{
-        background: `
-          radial-gradient(circle at 20% 30%, rgba(255, 0, 100, 0.15), transparent 40%),
-          radial-gradient(circle at 80% 70%, rgba(0, 255, 200, 0.15), transparent 40%),
-          radial-gradient(circle at 50% 50%, rgba(0, 100, 255, 0.1), transparent 50%),
-          #000000
-        `,
-        backgroundBlendMode: "screen",
+        backgroundColor: "#0a0a0a",
+        backgroundImage:
+          "repeating-linear-gradient(0deg, rgba(0,255,255,0.1), rgba(0,255,255,0.1) 1px, transparent 1px, transparent 40px), repeating-linear-gradient(90deg, rgba(0,255,255,0.1), rgba(0,255,255,0.1) 1px, transparent 1px, transparent 40px)",
+        backgroundSize: "40px 40px",
       }}
     >
       <div className="container mx-auto px-6 max-w-3xl">
@@ -56,62 +45,12 @@ const About = () => {
           high-performing systems.
         </p>
 
-        {/* Social Links */}
-        <div className="flex justify-center items-center gap-6 text-2xl mb-8">
-          <a
-            href="https://www.linkedin.com/in/davidjayaraja01"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="hover:text-blue-400 transition-colors"
-            aria-label="LinkedIn"
-          >
-            <FaLinkedinIn />
-          </a>
-          <a
-            href="https://github.com/Klassy01"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="hover:text-gray-300 transition-colors"
-            aria-label="GitHub"
-          >
-            <FaGithub />
-          </a>
-          <a
-            href="https://www.instagram.com/david_jayaraj_01"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="hover:text-pink-400 transition-colors"
-            aria-label="Instagram"
-          >
-            <FaInstagram />
-          </a>
-          <a
-            href="https://www.facebook.com/klassydj"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="hover:text-blue-600 transition-colors"
-            aria-label="Facebook"
-          >
-            <FaFacebookF />
-          </a>
-          <a
-            href="https://wa.me/919840488355"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="hover:text-green-500 transition-colors"
-            aria-label="WhatsApp"
-          >
-            <FaWhatsapp />
-          </a>
-        </div>
-
         {/* Resume Download Button */}
         <div className="flex justify-center mb-8">
           <button
             onClick={handleDownload}
-            className="inline-flex items-center px-6 py-3 bg-blue-600 text-white font-medium rounded-2xl shadow-md hover:bg-blue-700 transition"
+            className="inline-flex items-center px-6 py-3 bg-blue-600 text-white font-medium rounded-2xl shadow-md hover:bg-blue-700 hover:shadow-lg hover:brightness-110 hover:scale-105 transform transition duration-300 ease-in-out"
           >
-            <FaDownload className="mr-2" />
             Download Resume
           </button>
         </div>

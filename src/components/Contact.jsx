@@ -104,162 +104,200 @@ const Contact = () => {
   };
 
   return (
-    <section
-      id="contact"
-      className="py-20 px-4 text-white"
-      style={{
-        background: `
-          radial-gradient(circle at 20% 30%, rgba(255, 0, 100, 0.15), transparent 40%),
-          radial-gradient(circle at 80% 70%, rgba(0, 255, 200, 0.15), transparent 40%),
-          radial-gradient(circle at 50% 50%, rgba(0, 100, 255, 0.1), transparent 50%),
-          #000000
-        `,
-        backgroundBlendMode: 'screen',
-      }}
-    >
-      <h2 className="text-4xl font-bold text-center mb-12 text-[#00d9ff]">Get In Touch</h2>
+    <>
+      <style>{`
+        /* Spinner CSS */
+        .spinner {
+          border: 3px solid rgba(255, 255, 255, 0.3);
+          border-top: 3px solid white;
+          border-radius: 50%;
+          width: 18px;
+          height: 18px;
+          animation: spin 1s linear infinite;
+          margin-right: 8px;
+        }
+        @keyframes spin {
+          to {
+            transform: rotate(360deg);
+          }
+        }
+        /* Form status success */
+        .form-status.success {
+          color: #00ffc3;
+        }
+        /* Form status error */
+        .form-status.error {
+          color: #ff4d6d;
+        }
+      `}</style>
 
-      <div className="container mx-auto grid grid-cols-1 md:grid-cols-2 gap-10">
-        {/* Left Panel */}
-        <div className="bg-[#1c1b2f] p-8 rounded-2xl shadow-xl space-y-6">
-          <h3 className="text-2xl font-semibold mb-2 text-[#00d9ff]">
-            Let's <span className="text-[#00ffc3]">Connect</span>
-          </h3>
-          <p className="text-[#d1d5db]">
-            Feel free to reach out for collaborations or just a friendly hello
-          </p>
-
-          <div className="space-y-4 text-[#d1d5db]">
-            <div className="flex items-center gap-4">
-              <FaEnvelope className="text-[#00ffc3] text-xl" />
-              <span>davidbeniel2006@gmail.com</span>
-            </div>
-            <div className="flex items-center gap-4">
-              <FaPhone className="text-[#00ffc3] text-xl" />
-              <span>9840488355</span>
-            </div>
-            <div className="flex items-center gap-4">
-              <FaMapMarkerAlt className="text-[#00ffc3] text-xl" />
-              <span>Chennai, Tamil Nadu</span>
-            </div>
-          </div>
-
-          <div className="flex flex-wrap gap-5 pt-6 text-2xl text-[#00ffc3]">
-            <a
-              href="https://github.com/Klassy01"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="hover:text-white"
-              aria-label="GitHub"
-            >
-              <FaGithub />
-            </a>
-            <a
-              href="https://linkedin.com/in/davidjayaraja01"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="hover:text-white"
-              aria-label="LinkedIn"
-            >
-              <FaLinkedinIn />
-            </a>
-            <a
-              href="https://instagram.com/yourusername"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="hover:text-white"
-              aria-label="Instagram"
-            >
-              <FaInstagram />
-            </a>
-            <a
-              href="https://wa.me/919840488355"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="hover:text-white"
-              aria-label="WhatsApp"
-            >
-              <FaWhatsapp />
-            </a>
-            <a
-              href="https://facebook.com/klassy.dj"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="hover:text-white"
-              aria-label="Facebook"
-            >
-              <FaFacebookF />
-            </a>
-          </div>
-        </div>
-
-        {/* Right Panel - Form */}
-        <form
-          ref={formRef}
-          className="bg-[#1c1b2f] p-8 rounded-2xl shadow-xl space-y-6"
-          id="contactForm"
-        >
-          <input
-            type="text"
-            id="api_key"
-            name="api_key"
-            value="64480decb173c0683c0157da2f989015"
-            style={{ display: 'none' }}
-            readOnly
-          />
-
-          <input
-            type="text"
-            name="name"
-            placeholder="Full Name *"
-            value={formData.name}
-            onChange={handleInputChange}
-            required
-            className="w-full px-4 py-3 bg-black border border-[#00d9ff] text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-[#00d9ff]"
-          />
-          <input
-            type="email"
-            name="email"
-            placeholder="Email Address *"
-            value={formData.email}
-            onChange={handleInputChange}
-            required
-            className="w-full px-4 py-3 bg-black border border-[#00d9ff] text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-[#00d9ff]"
-          />
-          <textarea
-            name="message"
-            placeholder="Tell me about your project..."
-            rows="5"
-            value={formData.message}
-            onChange={handleInputChange}
-            required
-            className="w-full px-4 py-3 bg-black border border-[#00d9ff] text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-[#00d9ff]"
-          ></textarea>
-          <input
-            type="tel"
-            name="phone"
-            placeholder="Your Phone Number"
-            value={formData.phone}
-            onChange={handleInputChange}
-            className="w-full px-4 py-3 bg-black border border-[#00d9ff] text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-[#00d9ff]"
-          />
+      <section
+        id="contact"
+        className="min-h-screen flex items-center justify-center text-white py-20 px-4"
+        style={{
+          backgroundColor: '#0a0a0a',
+          backgroundImage:
+            'repeating-linear-gradient(0deg, rgba(0,255,255,0.1), rgba(0,255,255,0.1) 1px, transparent 1px, transparent 40px), repeating-linear-gradient(90deg, rgba(0,255,255,0.1), rgba(0,255,255,0.1) 1px, transparent 1px, transparent 40px)',
+          backgroundSize: '40px 40px',
+        }}
+      >
+        <div className="container mx-auto grid grid-cols-1 md:grid-cols-2 gap-10 max-w-6xl">
+          {/* Left Panel */}
           <div
-            ref={statusRef}
-            id="formStatus"
-            className="text-sm text-green-400"
-            style={{ display: 'none' }}
-          ></div>
-          <button
-            type="submit"
-            ref={submitButtonRef}
-            id="submitButton"
-            className="w-full py-3 bg-[#00334e] hover:bg-[#00d9ff] text-white font-semibold rounded-xl transition duration-300 flex items-center justify-center gap-2"
+            className="p-8 rounded-2xl shadow-xl space-y-6"
+            style={{
+              background: 'rgba(255, 255, 255, 0.05)',
+              backdropFilter: 'blur(10px)',
+              WebkitBackdropFilter: 'blur(10px)',
+              border: '1px solid rgba(255, 255, 255, 0.15)',
+            }}
           >
-            <span>Send Message</span> <span>✈️</span>
-          </button>
-        </form>
-      </div>
-    </section>
+            <h2 className="text-4xl font-bold text-[#00d9ff] mb-4">Get In Touch</h2>
+            <h3 className="text-2xl font-semibold mb-2 text-[#00d9ff]">
+              Let's <span className="text-[#00ffc3]">Connect</span>
+            </h3>
+            <p className="text-[#d1d5db]">
+              Feel free to reach out for collaborations or just a friendly hello
+            </p>
+
+            <div className="space-y-4 text-[#d1d5db]">
+              <div className="flex items-center gap-4">
+                <FaEnvelope className="text-[#00ffc3] text-xl" />
+                <span>davidbeniel2006@gmail.com</span>
+              </div>
+              <div className="flex items-center gap-4">
+                <FaPhone className="text-[#00ffc3] text-xl" />
+                <span>9840488355</span>
+              </div>
+              <div className="flex items-center gap-4">
+                <FaMapMarkerAlt className="text-[#00ffc3] text-xl" />
+                <span>Chennai, Tamil Nadu</span>
+              </div>
+            </div>
+
+            <div className="flex flex-wrap gap-5 pt-6 text-2xl text-[#00ffc3]">
+              <a
+                href="https://github.com/Klassy01"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hover:text-white"
+                aria-label="GitHub"
+              >
+                <FaGithub />
+              </a>
+              <a
+                href="https://linkedin.com/in/davidjayaraja01"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hover:text-white"
+                aria-label="LinkedIn"
+              >
+                <FaLinkedinIn />
+              </a>
+              <a
+                href="https://instagram.com/yourusername"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hover:text-white"
+                aria-label="Instagram"
+              >
+                <FaInstagram />
+              </a>
+              <a
+                href="https://wa.me/919840488355"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hover:text-white"
+                aria-label="WhatsApp"
+              >
+                <FaWhatsapp />
+              </a>
+              <a
+                href="https://facebook.com/klassy.dj"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hover:text-white"
+                aria-label="Facebook"
+              >
+                <FaFacebookF />
+              </a>
+            </div>
+          </div>
+
+          {/* Right Panel - Form */}
+          <form
+            ref={formRef}
+            className="p-8 rounded-2xl shadow-xl space-y-6"
+            id="contactForm"
+            style={{
+              background: 'rgba(255, 255, 255, 0.05)',
+              backdropFilter: 'blur(10px)',
+              WebkitBackdropFilter: 'blur(10px)',
+              border: '1px solid rgba(255, 255, 255, 0.15)',
+            }}
+          >
+            <input
+              type="text"
+              id="api_key"
+              name="api_key"
+              value="64480decb173c0683c0157da2f989015"
+              style={{ display: 'none' }}
+              readOnly
+            />
+
+            <input
+              type="text"
+              name="name"
+              placeholder="Full Name *"
+              value={formData.name}
+              onChange={handleInputChange}
+              required
+              className="w-full px-4 py-3 bg-black bg-opacity-30 border border-[#00d9ff] text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-[#00d9ff]"
+            />
+            <input
+              type="email"
+              name="email"
+              placeholder="Email Address *"
+              value={formData.email}
+              onChange={handleInputChange}
+              required
+              className="w-full px-4 py-3 bg-black bg-opacity-30 border border-[#00d9ff] text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-[#00d9ff]"
+            />
+            <textarea
+              name="message"
+              placeholder="Tell me about your project..."
+              rows="5"
+              value={formData.message}
+              onChange={handleInputChange}
+              required
+              className="w-full px-4 py-3 bg-black bg-opacity-30 border border-[#00d9ff] text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-[#00d9ff]"
+            ></textarea>
+            <input
+              type="tel"
+              name="phone"
+              placeholder="Your Phone Number"
+              value={formData.phone}
+              onChange={handleInputChange}
+              className="w-full px-4 py-3 bg-black bg-opacity-30 border border-[#00d9ff] text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-[#00d9ff]"
+            />
+            <div
+              ref={statusRef}
+              id="formStatus"
+              className="text-sm"
+              style={{ display: 'none' }}
+            ></div>
+            <button
+              type="submit"
+              ref={submitButtonRef}
+              id="submitButton"
+              className="w-full py-3 bg-white/20 backdrop-blur-md border border-white/30 text-white font-semibold rounded-xl transition duration-300 flex items-center justify-center gap-2 hover:bg-white/30 hover:border-white hover:shadow-lg hover:scale-[1.05] active:scale-95"
+            >
+              <span>Send Message</span> <span>✈️</span>
+            </button>
+          </form>
+        </div>
+      </section>
+    </>
   );
 };
 
