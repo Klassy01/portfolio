@@ -8,12 +8,16 @@ import Achievements from './components/Achievements';
 import Contact from './components/Contact';
 import Footer from './components/Footer';
 import GlobalBackgroundCanvas from './components/three/GlobalBackgroundCanvas';
+import AiCursor from './components/ui/AiCursor';
 import './index.css';
 import './styles/terminal.css';
 
 function App() {
   return (
     <div className="min-h-screen bg-void relative">
+      {/* AI Bot Emoji Mouse Cursor & Cybernetic Particle Follower */}
+      <AiCursor />
+
       {/* Full-Page Persistent 3D Background Canvas */}
       <GlobalBackgroundCanvas />
 

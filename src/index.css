@@ -37,10 +37,11 @@
 
 * {
   scroll-behavior: smooth;
+  cursor: none !important;
 }
 
-html {
-  scroll-behavior: smooth;
+html, body, button, a, input, textarea, select, [role="button"] {
+  cursor: none !important;
 }
 
 body {
@@ -252,8 +253,13 @@ body::after {
    ═══════════════════════════════════════════════ */
 
 @keyframes shine {
-  0% { left: -100%; }
-  100% { left: 100%; }
+  0% {
+    left: -100%;
+  }
+
+  100% {
+    left: 100%;
+  }
 }
 
 .shine-effect {

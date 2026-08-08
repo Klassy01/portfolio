@@ -11,8 +11,9 @@ import {
 } from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
 import { skills } from '../utils/constants';
-import TerminalWindowCard from './ui/TerminalWindowCard';
+import { staggerContainer, flyInFromDepth } from '../utils/animations';
 
+// Explicit icon map — replaces import * as Icons for performance
 const iconMap: Record<string, LucideIcon> = {
   Code2, Palette, Code, Component, FileCode, Layout, Wind,
   Server, Globe, Database, Zap, Rocket, FileType, Coffee, Terminal,
@@ -35,8 +36,6 @@ const categoryLabels: Record<SkillCategory, string> = {
   ai: 'AI/ML',
 };
 
-const rotations = [-2, 1.5, -1, 2, -1.5, 2.5, -2, 1];
-
 const Skills: React.FC = () => {
   const [activeTab, setActiveTab] = useState<SkillCategory>('frontend');
   const [ref, inView] = useInView({
@@ -48,7 +47,7 @@ const Skills: React.FC = () => {
   const filteredSkills = skills.filter(skill => skill.category === activeTab);
 
   return (
-    <section id="skills" className="section-padding relative">
+    <section id="skills" className="section-padding">
       <div className="max-w-7xl mx-auto">
         {/* Terminal Section Label */}
         <motion.div
@@ -56,13 +55,13 @@ const Skills: React.FC = () => {
           initial={{ opacity: 0, y: 30 }}
           animate={inView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.6 }}
-          className="mb-10"
+          className="mb-12"
         >
           <h2 className="font-mono text-3xl md:text-4xl font-bold text-text-primary mb-2">
             <span className="text-term-green">{'>'} </span>SKILLS.map()
           </h2>
           <p className="text-text-secondary font-mono text-sm">
-            // Floating terminal matrix of active technologies
+            // Technologies I work with
           </p>
         </motion.div>
 
@@ -72,64 +71,59 @@ const Skills: React.FC = () => {
             <motion.button
               key={category}
               onClick={() => setActiveTab(category)}
-              className={`font-mono text-xs px-4 py-2 rounded-lg border transition-all duration-300 ${
-                activeTab === category
-                  ? 'border-term-green/70 text-term-green bg-term-green/10 shadow-[0_0_15px_rgba(61,220,132,0.2)]'
-                  : 'border-glass-border text-text-secondary hover:border-glass-border-hover hover:text-text-primary'
-              }`}
-              whileHover={{ scale: 1.04 }}
-              whileTap={{ scale: 0.96 }}
+              className={`font-mono text-xs px-4 py-2 rounded-md border transition-all duration-300 ${activeTab === category
+                ? 'border-term-green/60 text-term-green bg-term-green/10 shadow-[0_0_15px_rgba(61,220,132,0.15)]'
+                : 'border-glass-border text-text-secondary hover:border-glass-border-hover hover:text-text-primary'
+                }`}
+              whileHover={{ scale: 1.03 }}
+              whileTap={{ scale: 0.97 }}
             >
               {categoryLabels[category]}
             </motion.button>
           ))}
         </div>
 
-        {/* Floating Skills Grid */}
+        {/* Skills Grid */}
         <motion.div
           key={activeTab}
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.4 }}
-          className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-5"
+          variants={staggerContainer}
+          initial="hidden"
+          animate="visible"
+          className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4"
         >
           {filteredSkills.map((skill, index) => {
             const Icon = skill.icon ? iconMap[skill.icon] : null;
-            const proficiency = skill.level || 80;
-            const fileExt = activeTab === 'ai' ? '.py' : activeTab === 'databases' ? '.sql' : '.ts';
-            const fileName = `${skill.name.toLowerCase().replace(/[^a-z0-9]/g, '_')}${fileExt}`;
+            const proficiency = skill.level || 75;
 
             return (
-              <TerminalWindowCard
+              <motion.div
                 key={`${activeTab}-${index}`}
-                title={fileName}
-                index={index}
-                floatDelay={(index % 3) as 0 | 1 | 2}
-                initialRotate={rotations[index % rotations.length]}
-                badge={activeTab.toUpperCase()}
-                className="cursor-pointer group"
+                className="skill-card glass-panel p-4 text-center group cursor-pointer"
+                variants={flyInFromDepth}
+                whileHover={{
+                  y: -10,
+                  scale: 1.05,
+                  rotateY: 3,
+                  rotateX: -3,
+                }}
+                whileTap={{ scale: 0.97 }}
+                style={{ transformStyle: 'preserve-3d' }}
               >
-                <div className="flex flex-col items-center gap-3 text-center">
+                <div className="flex flex-col items-center gap-2.5">
                   {Icon && (
                     <motion.div
-                      className="p-3 rounded-xl bg-cyan-bright/10 border border-cyan-bright/20 group-hover:border-cyan-bright/50 group-hover:bg-cyan-bright/20 transition-all duration-300"
-                      whileHover={{ rotate: 360, scale: 1.1 }}
+                      className="skill-icon p-3 rounded-lg bg-gradient-to-br from-cyan-bright/15 to-cyan-mid/10 transition-all duration-500"
+                      whileHover={{ rotate: 360, scale: 1.15 }}
                       transition={{ duration: 0.6 }}
                     >
-                      <Icon size={26} className="text-cyan-bright group-hover:text-mint transition-colors" />
+                      <Icon size={28} className="text-cyan-bright group-hover:text-mint transition-colors duration-300" />
                     </motion.div>
                   )}
+                  <span className="text-text-primary font-medium text-sm group-hover:text-white transition-colors duration-300">
+                    {skill.name}
+                  </span>
 
-                  <div>
-                    <div className="font-mono font-medium text-sm text-text-primary group-hover:text-cyan-bright transition-colors">
-                      {skill.name}
-                    </div>
-                    <div className="font-mono text-[10px] text-text-mono-dim mt-0.5">
-                      level: <span className="text-term-green">{proficiency}%</span>
-                    </div>
-                  </div>
-
-                  {/* Proficiency Bar */}
+                  {/* Proficiency bar */}
                   <div className="proficiency-bar w-full">
                     <motion.div
                       className="proficiency-bar-fill"
@@ -139,7 +133,7 @@ const Skills: React.FC = () => {
                     />
                   </div>
                 </div>
-              </TerminalWindowCard>
+              </motion.div>
             );
           })}
         </motion.div>
