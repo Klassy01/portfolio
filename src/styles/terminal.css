@@ -1,0 +1,280 @@
+/* ═══════════════════════════════════════════════
+   NEURAL TERMINAL — Terminal-Specific Styles
+   ═══════════════════════════════════════════════ */
+
+/* Terminal prompt prefix styling */
+.term-prompt {
+  font-family: 'JetBrains Mono', monospace;
+  color: var(--term-green);
+  font-weight: 500;
+}
+
+.term-prompt::before {
+  content: '> ';
+  color: var(--term-green);
+  opacity: 0.7;
+}
+
+/* Terminal section label — monospace heading */
+.terminal-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--text-mono-dim);
+}
+
+/* Bracket-style text wrapper */
+.term-bracket {
+  font-family: 'JetBrains Mono', monospace;
+  font-weight: 500;
+}
+
+.term-bracket::before {
+  content: '[ ';
+  color: var(--text-mono-dim);
+  transition: letter-spacing 0.3s ease;
+}
+
+.term-bracket::after {
+  content: ' ]';
+  color: var(--text-mono-dim);
+  transition: letter-spacing 0.3s ease;
+}
+
+/* Cursor blink effect */
+.cursor-blink::after {
+  content: '█';
+  font-family: 'JetBrains Mono', monospace;
+  animation: cursorBlink 1s step-end infinite;
+  color: var(--term-green);
+  font-size: 0.9em;
+  margin-left: 2px;
+}
+
+@keyframes cursorBlink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+/* Floating Window Bobbing Animation */
+@keyframes floatWindow {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-8px); }
+}
+
+.animate-float-window {
+  animation: floatWindow 6s ease-in-out infinite;
+}
+
+.animate-float-window-delayed {
+  animation: floatWindow 7s ease-in-out 1.5s infinite;
+}
+
+.animate-float-window-alt {
+  animation: floatWindow 8s ease-in-out 3s infinite;
+}
+
+/* Floating Terminal Window Chrome */
+.terminal-window {
+  background: rgba(10, 15, 20, 0.85);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--glass-border);
+  border-radius: 0.75rem;
+  position: relative;
+  overflow: hidden;
+  transition: border-color 0.4s ease, box-shadow 0.4s ease, transform 0.4s ease;
+}
+
+.terminal-window:hover {
+  border-color: var(--glass-border-hover);
+  box-shadow:
+    0 25px 50px -12px rgba(95, 216, 224, 0.25),
+    0 0 30px rgba(95, 216, 224, 0.12);
+}
+
+.terminal-window-header {
+  background: rgba(5, 7, 10, 0.7);
+  border-bottom: 1px solid var(--glass-border);
+  padding: 0.5rem 0.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  user-select: none;
+}
+
+.terminal-dots {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.dot-close {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background-color: var(--term-red);
+  opacity: 0.85;
+}
+
+.dot-minimize {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background-color: var(--term-amber);
+  opacity: 0.85;
+}
+
+.dot-expand {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background-color: var(--term-green);
+  opacity: 0.85;
+}
+
+/* Code Syntax Highlights */
+.code-keyword {
+  color: var(--cyan-bright);
+  font-family: 'JetBrains Mono', monospace;
+  font-weight: 600;
+}
+
+.code-string {
+  color: var(--mint);
+  font-family: 'JetBrains Mono', monospace;
+}
+
+.code-comment {
+  color: var(--text-mono-dim);
+  font-family: 'JetBrains Mono', monospace;
+  font-style: italic;
+}
+
+.code-function {
+  color: var(--term-amber);
+  font-family: 'JetBrains Mono', monospace;
+}
+
+/* Scanline overlay effect */
+.scanline-overlay {
+  position: relative;
+}
+
+.scanline-overlay::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(95, 216, 224, 0.015) 2px,
+    rgba(95, 216, 224, 0.015) 4px
+  );
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Flicker-in animation for stat numbers */
+.flicker-in {
+  animation: flickerIn 0.8s ease-out forwards;
+}
+
+@keyframes flickerIn {
+  0% { opacity: 0; filter: brightness(0); }
+  10% { opacity: 0.8; filter: brightness(2); }
+  20% { opacity: 0.4; filter: brightness(0.5); }
+  40% { opacity: 0.9; filter: brightness(1.5); }
+  60% { opacity: 0.6; filter: brightness(0.8); }
+  100% { opacity: 1; filter: brightness(1); }
+}
+
+/* Glass panel with terminal accent line */
+.glass-panel {
+  background: var(--bg-panel-raised);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--glass-border);
+  border-radius: 0.75rem;
+  position: relative;
+  overflow: hidden;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.glass-panel:hover {
+  border-color: var(--glass-border-hover);
+  box-shadow:
+    0 0 20px rgba(95, 216, 224, 0.1),
+    0 8px 32px rgba(0, 0, 0, 0.3);
+}
+
+/* Top accent line on glass panels */
+.glass-panel::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    var(--cyan-mid),
+    transparent
+  );
+  opacity: 0.5;
+}
+
+/* Terminal status indicators */
+.status-ok {
+  color: var(--term-green);
+  font-family: 'JetBrains Mono', monospace;
+  font-weight: 600;
+}
+
+.status-err {
+  color: var(--term-red);
+  font-family: 'JetBrains Mono', monospace;
+  font-weight: 600;
+}
+
+.status-warn {
+  color: var(--term-amber);
+  font-family: 'JetBrains Mono', monospace;
+  font-weight: 600;
+}
+
+/* Timeline glow line */
+.timeline-glow {
+  width: 2px;
+  background: linear-gradient(
+    180deg,
+    var(--cyan-bright),
+    var(--cyan-mid),
+    var(--term-green),
+    var(--cyan-mid),
+    transparent
+  );
+  box-shadow: 0 0 8px rgba(95, 216, 224, 0.4), 0 0 16px rgba(95, 216, 224, 0.2);
+}
+
+/* Proficiency bar */
+.proficiency-bar {
+  height: 3px;
+  border-radius: 2px;
+  background: rgba(95, 216, 224, 0.1);
+  overflow: hidden;
+  margin-top: 0.5rem;
+}
+
+.proficiency-bar-fill {
+  height: 100%;
+  border-radius: 2px;
+  background: linear-gradient(90deg, var(--term-green), var(--cyan-bright));
+  transition: width 0.8s ease-out;
+}

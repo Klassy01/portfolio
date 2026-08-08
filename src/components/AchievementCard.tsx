@@ -1,6 +1,7 @@
-﻿import React from 'react';
+import React from 'react';
 import { motion } from 'framer-motion';
 import { Trophy, Medal, Target, Star, Shield } from 'lucide-react';
+import type { LucideIcon } from 'lucide-react';
 import type { Achievement } from '../types';
 
 interface AchievementCardProps {
@@ -8,7 +9,7 @@ interface AchievementCardProps {
   index: number;
 }
 
-const iconMap: Record<string, React.ElementType> = {
+const iconMap: Record<string, LucideIcon> = {
   Trophy,
   Medal,
   Target,
@@ -18,93 +19,75 @@ const iconMap: Record<string, React.ElementType> = {
 
 const AchievementCard: React.FC<AchievementCardProps> = ({ achievement, index }) => {
   const Icon = iconMap[achievement.icon] || Trophy;
-  
-  const getGradient = () => {
-    if (achievement.featured) return 'from-emerald-300 to-teal-400';
-    if (achievement.prize?.includes('15')) return 'from-slate-300 to-slate-400';
-    if (achievement.prize?.includes('2,000')) return 'from-teal-500 to-emerald-400';
-    return 'from-cyan-500 to-teal-400';
-  };
-
-  const getBgGradient = () => {
-    if (achievement.featured) return 'from-emerald-300/10 to-teal-400/10 border-emerald-300/30';
-    return 'from-cyan-500/10 to-teal-400/10 border-teal-400/30';
-  };
-
-  const getIconBg = () => {
-    if (achievement.featured) return 'from-emerald-300 to-teal-400';
-    if (achievement.prize?.includes('15')) return 'from-slate-400 to-slate-500';
-    if (achievement.prize?.includes('2,000')) return 'from-teal-500 to-emerald-400';
-    return 'from-cyan-500 to-teal-400';
-  };
 
   return (
     <motion.div
-      initial={{ opacity: 0, x: index % 2 === 0 ? -30 : 30 }}
+      initial={{ opacity: 0, x: index % 2 === 0 ? -20 : 20 }}
       whileInView={{ opacity: 1, x: 0 }}
       viewport={{ once: true }}
       transition={{ duration: 0.5, delay: index * 0.1 }}
-      whileHover={{ scale: 1.02 }}
+      whileHover={{ scale: 1.01 }}
       className="group"
     >
-      <div className={`relative p-4 md:p-6 rounded-2xl bg-gradient-to-r ${getBgGradient()} border backdrop-blur-sm transition-all duration-300 hover:border-opacity-60`}>
-        {/* Rank Badge */}
-        <div className="absolute -top-3 -left-2 md:left-4">
-          <div className={`px-3 py-1 rounded-full bg-gradient-to-r ${getGradient()} text-white text-xs font-bold shadow-lg`}>
-            #{index + 1}
-          </div>
+      <div className="glass-panel p-4 md:p-5 group-hover:border-glass-border-hover transition-all duration-300 relative">
+        {/* Terminal rank badge */}
+        <div className="absolute -top-2.5 left-4">
+          <span className="font-mono text-[10px] px-2 py-0.5 rounded border border-term-green/40 text-term-green bg-void">
+            [#{index + 1}]
+          </span>
         </div>
 
-        <div className="flex items-center gap-4 md:gap-6">
+        <div className="flex items-center gap-4 md:gap-5 mt-1">
           {/* Icon */}
-          <div className={`flex-shrink-0 w-14 h-14 md:w-16 md:h-16 rounded-2xl bg-gradient-to-br ${getIconBg()} flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300`}>
-            <Icon className="w-7 h-7 md:w-8 md:h-8 text-white" />
+          <div className="flex-shrink-0 w-12 h-12 md:w-14 md:h-14 rounded-lg border border-cyan-bright/20 bg-cyan-bright/5 flex items-center justify-center group-hover:border-cyan-bright/40 group-hover:bg-cyan-bright/10 transition-all duration-300">
+            <Icon className="w-6 h-6 md:w-7 md:h-7 text-cyan-bright" />
           </div>
 
           {/* Content */}
           <div className="flex-grow min-w-0">
             <div className="flex flex-wrap items-center gap-2 mb-1">
-              <h3 className="text-lg md:text-xl font-bold text-white group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-cyan-500 group-hover:to-teal-400 transition-all duration-300">
+              <h3 className="text-base md:text-lg font-semibold text-text-primary group-hover:text-cyan-bright transition-colors duration-300">
                 {achievement.title}
               </h3>
               {achievement.organization && (
-                <span className="text-xs px-2 py-0.5 rounded-full bg-teal-400/20 text-teal-300 font-medium">
+                <span className="font-mono text-[10px] px-2 py-0.5 rounded border border-glass-border text-text-mono-dim">
                   {achievement.organization}
                 </span>
               )}
             </div>
-            <p className="text-slate-400 text-sm line-clamp-2">
+            <p className="text-text-secondary text-sm line-clamp-2">
               {achievement.description}
             </p>
           </div>
 
-          {/* Prize */}
+          {/* Prize — amber monospace */}
           {achievement.prize && (
             <div className="flex-shrink-0 text-right">
-              <div className={`text-xl md:text-2xl font-bold bg-gradient-to-r ${getGradient()} bg-clip-text text-transparent`}>
+              <div className="font-mono text-xl md:text-2xl font-bold text-term-amber">
                 {achievement.prize}
               </div>
-              <p className="text-xs text-slate-500">Prize</p>
+              <p className="font-mono text-[10px] text-text-mono-dim">PRIZE</p>
             </div>
           )}
 
           {/* Year */}
           <div className="hidden md:block flex-shrink-0 text-right">
-            <div className="text-sm font-semibold text-slate-300">{achievement.year}</div>
+            <span className="font-mono text-xs text-text-mono-dim">{achievement.year}</span>
           </div>
         </div>
 
+        {/* Photos */}
         {achievement.photos && achievement.photos.length > 0 && (
           <div className="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-3">
             {achievement.photos.slice(0, 2).map((photo, photoIndex) => (
               <div
                 key={`${achievement.id}-${photoIndex}`}
-                className="rounded-xl overflow-hidden border border-teal-400/20 bg-dark-bg/40 p-2"
+                className="rounded-lg overflow-hidden border border-glass-border bg-void/50 p-1.5"
               >
                 <img
                   src={photo}
                   alt={`${achievement.title} photo ${photoIndex + 1}`}
-                  className="w-full h-auto max-h-72 object-contain"
+                  className="w-full h-auto max-h-64 object-contain rounded"
                   loading="lazy"
                 />
               </div>
@@ -112,9 +95,9 @@ const AchievementCard: React.FC<AchievementCardProps> = ({ achievement, index })
           </div>
         )}
 
-        {/* Glow effect for featured */}
+        {/* Featured glow */}
         {achievement.featured && (
-          <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-emerald-300/5 to-teal-400/5 pointer-events-none" />
+          <div className="absolute inset-0 rounded-xl bg-gradient-to-r from-term-green/3 to-cyan-bright/3 pointer-events-none" />
         )}
       </div>
     </motion.div>
@@ -122,4 +105,3 @@ const AchievementCard: React.FC<AchievementCardProps> = ({ achievement, index })
 };
 
 export default AchievementCard;
-

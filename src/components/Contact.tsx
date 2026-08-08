@@ -1,18 +1,9 @@
-﻿import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef } from 'react';
 import { motion } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
-import {
-  FaEnvelope,
-  FaPhone,
-  FaMapMarkerAlt,
-  FaGithub,
-  FaLinkedinIn,
-  FaInstagram,
-  FaWhatsapp,
-  FaFacebookF,
-} from 'react-icons/fa';
+import { Mail, Phone, MapPin, Github, Linkedin, Instagram, MessageCircle, Facebook } from 'lucide-react';
 import { personalInfo } from '../utils/constants';
-import GradientText from './GradientText';
+import TerminalButton from './ui/TerminalButton';
 
 const Contact: React.FC = () => {
   const [ref, inView] = useInView({
@@ -27,80 +18,9 @@ const Contact: React.FC = () => {
     message: '',
   });
 
+  const [submitStatus, setSubmitStatus] = useState<'idle' | 'sending' | 'success' | 'error'>('idle');
+
   const formRef = useRef<HTMLFormElement>(null);
-  const statusRef = useRef<HTMLDivElement>(null);
-  const submitButtonRef = useRef<HTMLButtonElement>(null);
-
-  useEffect(() => {
-    const form = formRef.current;
-    const submitButton = submitButtonRef.current;
-    const formStatus = statusRef.current;
-
-    const setLoadingState = (isLoading: boolean) => {
-      if (submitButton) {
-        if (isLoading) {
-          submitButton.classList.add('loading');
-          submitButton.innerHTML = '<div class="spinner"></div> Sending...';
-          submitButton.disabled = true;
-        } else {
-          submitButton.classList.remove('loading');
-          submitButton.innerHTML = '<span>Send Message</span> <span>-&gt;</span>';
-          submitButton.disabled = false;
-        }
-      }
-    };
-
-    const showMessage = (message: string, type: string) => {
-      if (formStatus) {
-        formStatus.textContent = message;
-        formStatus.className = 'form-status';
-        formStatus.classList.add(type);
-        formStatus.style.display = 'block';
-
-        if (type === 'success') {
-          setTimeout(() => {
-            formStatus.style.display = 'none';
-          }, 5000);
-        }
-      }
-    };
-
-    if (form) {
-      const submitHandler = (e: Event) => {
-        e.preventDefault();
-
-        const formDataObj = new FormData(form);
-        setLoadingState(true);
-
-        fetch('https://api.hlomail.in/v1/contact-mail', {
-          method: 'POST',
-          body: formDataObj,
-        })
-          .then((response) => {
-            if (response.ok) {
-              showMessage('Your message has been sent successfully!', 'success');
-              form.reset();
-              setFormData({ name: '', email: '', phone: '', message: '' });
-            } else {
-              throw new Error('Server error');
-            }
-          })
-          .catch((error) => {
-            console.error('Error:', error);
-            showMessage('There was an error sending your message. Please try again.', 'error');
-          })
-          .finally(() => {
-            setLoadingState(false);
-          });
-      };
-
-      form.addEventListener('submit', submitHandler);
-
-      return () => {
-        form.removeEventListener('submit', submitHandler);
-      };
-    }
-  }, []);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
@@ -110,235 +30,233 @@ const Contact: React.FC = () => {
     }));
   };
 
-  return (
-    <>
-      <style>{`
-        .spinner {
-          border: 3px solid rgba(255, 255, 255, 0.3);
-          border-top: 3px solid white;
-          border-radius: 50%;
-          width: 18px;
-          height: 18px;
-          animation: spin 1s linear infinite;
-          margin-right: 8px;
-          display: inline-block;
-        }
-        @keyframes spin {
-          to {
-            transform: rotate(360deg);
-          }
-        }
-        .form-status.success {
-          color: #22c55e;
-          padding: 12px;
-          border-radius: 8px;
-          background: rgba(34, 197, 94, 0.1);
-          border: 1px solid rgba(34, 197, 94, 0.3);
-        }
-        .form-status.error {
-          color: #4db9c4;
-          padding: 12px;
-          border-radius: 8px;
-          background: rgba(77, 185, 196, 0.1);
-          border: 1px solid rgba(77, 185, 196, 0.3);
-        }
-      `}</style>
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setSubmitStatus('sending');
 
-      <section id="contact" className="section-padding relative overflow-hidden">
-        {/* Decorative elements */}
-        <div className="absolute top-20 left-20 w-72 h-72 bg-teal-400 rounded-full mix-blend-multiply filter blur-3xl opacity-10 animate-pulse"></div>
-        <div className="absolute bottom-20 right-20 w-72 h-72 bg-cyan-500 rounded-full mix-blend-multiply filter blur-3xl opacity-10 animate-pulse"></div>
-        
-        <div className="max-w-6xl mx-auto relative z-10">
+    try {
+      const response = await fetch('https://formspree.io/f/xppawvbz', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
+
+      if (response.ok) {
+        setSubmitStatus('success');
+        setFormData({ name: '', email: '', phone: '', message: '' });
+        setTimeout(() => setSubmitStatus('idle'), 6000);
+      } else {
+        throw new Error('Formspree submission failed');
+      }
+    } catch (error) {
+      console.error('Error submitting form:', error);
+      setSubmitStatus('error');
+      setTimeout(() => setSubmitStatus('idle'), 6000);
+    }
+  };
+
+  const socialIcons = [
+    { icon: Github, href: 'https://github.com/DavidJayaraj01', label: 'GitHub' },
+    { icon: Linkedin, href: 'https://linkedin.com/in/davidjayaraja01', label: 'LinkedIn' },
+    { icon: Instagram, href: 'https://instagram.com/david_jayaraj_01', label: 'Instagram' },
+    { icon: MessageCircle, href: 'https://wa.me/919840488355', label: 'WhatsApp' },
+    { icon: Facebook, href: 'https://facebook.com/klassy.dj', label: 'Facebook' },
+  ];
+
+  const getSubmitContent = () => {
+    switch (submitStatus) {
+      case 'sending':
+        return (
+          <span className="font-mono text-sm animate-pulse">
+            {'>'} TRANSMITTING MESSAGE...
+          </span>
+        );
+      case 'success':
+        return (
+          <span className="font-mono text-sm text-term-green">
+            [ OK ] MESSAGE_DELIVERED_TO_FORMSPREE
+          </span>
+        );
+      case 'error':
+        return (
+          <span className="font-mono text-sm text-term-red">
+            [ ERR ] TRANSMISSION_FAILED // TRY AGAIN
+          </span>
+        );
+      default:
+        return null;
+    }
+  };
+
+  return (
+    <section id="contact" className="section-padding relative overflow-hidden">
+      <div className="max-w-6xl mx-auto relative z-10">
+        {/* Terminal Section Label */}
+        <motion.div
+          ref={ref}
+          initial={{ opacity: 0, y: 30 }}
+          animate={inView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.6 }}
+          className="mb-12"
+        >
+          <h2 className="font-mono text-3xl md:text-4xl font-bold text-text-primary mb-2">
+            <span className="text-term-green">{'>'} </span>CONTACT
+          </h2>
+          <p className="text-text-secondary font-mono text-sm">
+            // Feel free to reach out for collaborations or just a friendly hello
+          </p>
+        </motion.div>
+
+        <div className="grid md:grid-cols-2 gap-6">
+          {/* Left Panel — Contact Info */}
           <motion.div
-            ref={ref}
-            initial={{ opacity: 0, y: 30 }}
-            animate={inView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.6 }}
-            className="text-center mb-12"
+            initial={{ opacity: 0, x: -30 }}
+            animate={inView ? { opacity: 1, x: 0 } : {}}
+            transition={{ duration: 0.6, delay: 0.2 }}
+            className="glass-panel p-6 space-y-5"
           >
-            <GradientText as="h2" className="text-4xl md:text-5xl font-bold mb-4">
-              Get In Touch
-            </GradientText>
-            <p className="text-slate-400 text-lg">Let's Connect</p>
-            <p className="text-slate-300 mt-2">Feel free to reach out for collaborations or just a friendly hello</p>
+            <h3 className="font-mono text-lg font-semibold text-text-primary">
+              <span className="text-text-mono-dim">// </span>Contact Information
+            </h3>
+
+            <div className="space-y-3">
+              <a href={`mailto:${personalInfo.email}`} className="flex items-center gap-3 text-text-secondary hover:text-cyan-bright transition-colors group">
+                <div className="p-2.5 rounded-lg border border-glass-border bg-cyan-bright/5 group-hover:border-cyan-bright/40 transition-all">
+                  <Mail className="text-cyan-bright" size={18} />
+                </div>
+                <span className="font-mono text-sm">{personalInfo.email}</span>
+              </a>
+              <a href={`tel:${personalInfo.phone}`} className="flex items-center gap-3 text-text-secondary hover:text-cyan-bright transition-colors group">
+                <div className="p-2.5 rounded-lg border border-glass-border bg-cyan-bright/5 group-hover:border-cyan-bright/40 transition-all">
+                  <Phone className="text-cyan-bright" size={18} />
+                </div>
+                <span className="font-mono text-sm">{personalInfo.phone}</span>
+              </a>
+              <div className="flex items-center gap-3 text-text-secondary">
+                <div className="p-2.5 rounded-lg border border-glass-border bg-cyan-bright/5">
+                  <MapPin className="text-cyan-bright" size={18} />
+                </div>
+                <span className="font-mono text-sm">{personalInfo.location}</span>
+              </div>
+            </div>
+
+            {/* Social Links */}
+            <div className="pt-4 border-t border-glass-border">
+              <h4 className="font-mono text-sm text-text-mono-dim mb-3">
+                {'>'} connect_with_me:
+              </h4>
+              <div className="flex flex-wrap gap-2">
+                {socialIcons.map(({ icon: SocialIcon, href, label }) => (
+                  <motion.a
+                    key={label}
+                    href={href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="p-2.5 rounded-lg border border-glass-border bg-panel text-text-secondary hover:text-cyan-bright hover:border-cyan-bright/40 hover:bg-cyan-bright/5 hover:shadow-[0_0_15px_rgba(95,216,224,0.15)] transition-all duration-300"
+                    whileHover={{ scale: 1.1 }}
+                    whileTap={{ scale: 0.95 }}
+                    title={label}
+                  >
+                    <SocialIcon size={18} />
+                  </motion.a>
+                ))}
+              </div>
+            </div>
           </motion.div>
 
-          <div className="grid md:grid-cols-2 gap-8">
-            {/* Left Panel - Contact Info */}
-            <motion.div
-              initial={{ opacity: 0, x: -30 }}
-              animate={inView ? { opacity: 1, x: 0 } : {}}
-              transition={{ duration: 0.6, delay: 0.2 }}
-              className="p-8 rounded-2xl border space-y-6"
-              style={{
-                background: 'linear-gradient(135deg, rgba(99, 199, 207, 0.1), rgba(77, 185, 196, 0.1))',
-                backdropFilter: 'blur(20px)',
-                borderColor: 'rgba(99, 199, 207, 0.3)',
-              }}
-            >
-              <h3 className="text-2xl font-bold text-white mb-6">Contact Information</h3>
-
-              <div className="space-y-4">
-                <a href={`mailto:${personalInfo.email}`} className="flex items-center gap-4 text-slate-300 hover:text-teal-300 transition-colors group">
-                  <div className="p-3 rounded-lg bg-gradient-to-r from-cyan-500/30 to-teal-400/30 group-hover:from-cyan-500/50 group-hover:to-teal-400/50 transition-all">
-                    <FaEnvelope className="text-teal-300 text-xl" />
-                  </div>
-                  <span>{personalInfo.email}</span>
-                </a>
-                <a href={`tel:${personalInfo.phone}`} className="flex items-center gap-4 text-slate-300 hover:text-teal-300 transition-colors group">
-                  <div className="p-3 rounded-lg bg-gradient-to-r from-cyan-500/30 to-teal-400/30 group-hover:from-cyan-500/50 group-hover:to-teal-400/50 transition-all">
-                    <FaPhone className="text-teal-300 text-xl" />
-                  </div>
-                  <span>{personalInfo.phone}</span>
-                </a>
-                <div className="flex items-center gap-4 text-slate-300">
-                  <div className="p-3 rounded-lg bg-gradient-to-r from-cyan-500/30 to-teal-400/30">
-                    <FaMapMarkerAlt className="text-teal-300 text-xl" />
-                  </div>
-                  <span>{personalInfo.location}</span>
-                </div>
-              </div>
-
-              <div className="pt-6">
-                <h4 className="text-lg font-semibold text-white mb-4">Connect with me</h4>
-                <div className="flex flex-wrap gap-3">
-                  <a
-                    href="https://github.com/DavidJayaraj01"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="p-3 rounded-lg bg-gradient-to-r from-cyan-500/30 to-teal-400/30 hover:from-cyan-500 hover:to-teal-400 text-white text-xl transition-all duration-300 hover:scale-110 hover:shadow-lg hover:shadow-teal-400/50"
-                  >
-                    <FaGithub />
-                  </a>
-                  <a
-                    href="https://linkedin.com/in/davidjayaraja01"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="p-3 rounded-lg bg-gradient-to-r from-cyan-500/30 to-teal-400/30 hover:from-cyan-500 hover:to-teal-400 text-white text-xl transition-all duration-300 hover:scale-110 hover:shadow-lg hover:shadow-teal-400/50"
-                  >
-                    <FaLinkedinIn />
-                  </a>
-                  <a
-                    href="https://instagram.com/david_jayaraj_01"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="p-3 rounded-lg bg-gradient-to-r from-cyan-500/30 to-teal-400/30 hover:from-cyan-500 hover:to-teal-400 text-white text-xl transition-all duration-300 hover:scale-110 hover:shadow-lg hover:shadow-pink-500/50"
-                  >
-                    <FaInstagram />
-                  </a>
-                  <a
-                    href="https://wa.me/919840488355"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="p-3 rounded-lg bg-gradient-to-r from-cyan-500/30 to-teal-400/30 hover:from-cyan-500 hover:to-teal-400 text-white text-xl transition-all duration-300 hover:scale-110 hover:shadow-lg hover:shadow-green-500/50"
-                  >
-                    <FaWhatsapp />
-                  </a>
-                  <a
-                    href="https://facebook.com/klassy.dj"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="p-3 rounded-lg bg-gradient-to-r from-cyan-500/30 to-teal-400/30 hover:from-cyan-500 hover:to-teal-400 text-white text-xl transition-all duration-300 hover:scale-110 hover:shadow-lg hover:shadow-blue-500/50"
-                  >
-                    <FaFacebookF />
-                  </a>
-                </div>
-              </div>
-            </motion.div>
-
-            {/* Right Panel - Form */}
-            <motion.form
-              ref={formRef}
-              initial={{ opacity: 0, x: 30 }}
-              animate={inView ? { opacity: 1, x: 0 } : {}}
-              transition={{ duration: 0.6, delay: 0.3 }}
-              className="p-8 rounded-2xl border space-y-5"
-              style={{
-                background: 'linear-gradient(135deg, rgba(77, 185, 196, 0.1), rgba(99, 199, 207, 0.1))',
-                backdropFilter: 'blur(20px)',
-                borderColor: 'rgba(77, 185, 196, 0.3)',
-              }}
-            >
+          {/* Right Panel — Formspree Connected Form */}
+          <motion.form
+            ref={formRef}
+            onSubmit={handleSubmit}
+            initial={{ opacity: 0, x: 30 }}
+            animate={inView ? { opacity: 1, x: 0 } : {}}
+            transition={{ duration: 0.6, delay: 0.3 }}
+            className="glass-panel p-6 space-y-4"
+          >
+            <div>
+              <label className="font-mono text-xs text-text-mono-dim mb-1.5 block">
+                {'>'} NAME:
+              </label>
               <input
-                type="hidden"
-                name="api_key"
-                value="64480decb173c0683c0157da2f989015"
+                type="text"
+                name="name"
+                placeholder="Your full name"
+                value={formData.name}
+                onChange={handleInputChange}
+                required
+                className="w-full px-4 py-2.5 bg-void/50 border border-glass-border text-text-primary rounded-lg focus:outline-none focus:ring-1 focus:ring-cyan-bright/50 focus:border-cyan-bright/50 transition-all font-mono text-sm placeholder-text-mono-dim"
               />
+            </div>
+            <div>
+              <label className="font-mono text-xs text-text-mono-dim mb-1.5 block">
+                {'>'} EMAIL:
+              </label>
               <input
-                type="hidden"
-                name="to_email"
-                value="davidjayaraj01@gmail.com"
+                type="email"
+                name="email"
+                placeholder="your@email.com"
+                value={formData.email}
+                onChange={handleInputChange}
+                required
+                className="w-full px-4 py-2.5 bg-void/50 border border-glass-border text-text-primary rounded-lg focus:outline-none focus:ring-1 focus:ring-cyan-bright/50 focus:border-cyan-bright/50 transition-all font-mono text-sm placeholder-text-mono-dim"
               />
+            </div>
+            <div>
+              <label className="font-mono text-xs text-text-mono-dim mb-1.5 block">
+                {'>'} PHONE:
+              </label>
+              <input
+                type="tel"
+                name="phone"
+                placeholder="+91 XXXXX XXXXX"
+                value={formData.phone}
+                onChange={handleInputChange}
+                className="w-full px-4 py-2.5 bg-void/50 border border-glass-border text-text-primary rounded-lg focus:outline-none focus:ring-1 focus:ring-cyan-bright/50 focus:border-cyan-bright/50 transition-all font-mono text-sm placeholder-text-mono-dim"
+              />
+            </div>
+            <div>
+              <label className="font-mono text-xs text-text-mono-dim mb-1.5 block">
+                {'>'} MESSAGE:
+              </label>
+              <textarea
+                name="message"
+                placeholder="Have something in mind?"
+                rows={4}
+                value={formData.message}
+                onChange={handleInputChange}
+                required
+                className="w-full px-4 py-2.5 bg-void/50 border border-glass-border text-text-primary rounded-lg focus:outline-none focus:ring-1 focus:ring-cyan-bright/50 focus:border-cyan-bright/50 transition-all resize-none font-mono text-sm placeholder-text-mono-dim"
+              />
+            </div>
 
-              <div>
-                <input
-                  type="text"
-                  name="name"
-                  placeholder="Full Name *"
-                  value={formData.name}
-                  onChange={handleInputChange}
-                  required
-                  className="w-full px-4 py-3 bg-dark-bg/50 border border-teal-400/30 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-400 focus:border-transparent transition-all placeholder-slate-500"
-                />
+            {/* Status message */}
+            {submitStatus !== 'idle' && (
+              <div className={`p-3 rounded-lg border font-mono text-sm ${submitStatus === 'success'
+                  ? 'border-term-green/30 bg-term-green/5 text-term-green'
+                  : submitStatus === 'error'
+                    ? 'border-term-red/30 bg-term-red/5 text-term-red'
+                    : 'border-cyan-bright/30 bg-cyan-bright/5 text-cyan-bright'
+                }`}>
+                {getSubmitContent()}
               </div>
-              <div>
-                <input
-                  type="email"
-                  name="email"
-                  placeholder="Email Address *"
-                  value={formData.email}
-                  onChange={handleInputChange}
-                  required
-                  className="w-full px-4 py-3 bg-dark-bg/50 border border-teal-400/30 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-400 focus:border-transparent transition-all placeholder-slate-500"
-                />
-              </div>
-              <div>
-                <input
-                  type="tel"
-                  name="phone"
-                  placeholder="Your Phone Number"
-                  value={formData.phone}
-                  onChange={handleInputChange}
-                  className="w-full px-4 py-3 bg-dark-bg/50 border border-teal-400/30 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-400 focus:border-transparent transition-all placeholder-slate-500"
-                />
-              </div>
-              <div>
-                <textarea
-                  name="message"
-                  placeholder="Tell me about your project..."
-                  rows={5}
-                  value={formData.message}
-                  onChange={handleInputChange}
-                  required
-                  className="w-full px-4 py-3 bg-dark-bg/50 border border-teal-400/30 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-400 focus:border-transparent transition-all resize-none placeholder-slate-500"
-                ></textarea>
-              </div>
-              
-              <div
-                ref={statusRef}
-                className="form-status text-sm"
-                style={{ display: 'none' }}
-              ></div>
-              
-              <button
-                type="submit"
-                ref={submitButtonRef}
-                className="group relative w-full py-4 bg-gradient-to-r from-cyan-500 to-teal-400 text-white font-semibold rounded-xl overflow-hidden transition-all duration-300 flex items-center justify-center gap-2 hover:shadow-2xl hover:shadow-teal-400/50 hover:scale-105 active:scale-95"
-              >
-                <span className="absolute inset-0 w-full h-full bg-gradient-to-r from-teal-400 to-cyan-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></span>
-                <span className="relative flex items-center gap-2">
-                  <span>Send Message</span> 
-                  <span>{'->'}</span>
-                </span>
-              </button>
-            </motion.form>
-          </div>
+            )}
+
+            <TerminalButton
+              variant="primary"
+              type="submit"
+              disabled={submitStatus === 'sending'}
+              className="w-full py-3"
+            >
+              {submitStatus === 'sending' ? 'SENDING...' : 'SEND_MESSAGE'}
+            </TerminalButton>
+          </motion.form>
         </div>
-      </section>
-    </>
+      </div>
+    </section>
   );
 };
 
 export default Contact;
-

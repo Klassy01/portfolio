@@ -1,68 +1,62 @@
-﻿import React from 'react';
-import { motion } from 'framer-motion';
-import { Github } from 'lucide-react';
+import React from 'react';
+import { Github, ExternalLink } from 'lucide-react';
 import type { Project } from '../types';
-import Badge from './Badge';
-import Button from './Button';
+import TerminalWindowCard from './ui/TerminalWindowCard';
+import TerminalButton from './ui/TerminalButton';
 
 interface ProjectCardProps {
   project: Project;
-  index: number;
+  index?: number;
 }
 
-const ProjectCard: React.FC<ProjectCardProps> = ({ project, index }) => {
-  return (
-    <motion.div
-      className="project-card card h-full flex flex-col relative overflow-hidden group shine-effect"
-      initial={{ opacity: 0, y: 50 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      transition={{ duration: 0.5, delay: index * 0.1 }}
-      whileHover={{ 
-        y: -15, 
-        scale: 1.03,
-        rotateX: 5,
-      }}
-      style={{ transformStyle: 'preserve-3d' }}
-    >
-      {/* Animated Gradient Background Effect */}
-      <motion.div 
-        className="absolute inset-0 bg-gradient-to-br from-cyan-500/10 via-teal-400/10 to-emerald-300/10 opacity-0 group-hover:opacity-100 transition-all duration-500"
-        initial={{ rotate: 0 }}
-        whileHover={{ rotate: 180 }}
-        transition={{ duration: 10, repeat: Infinity, ease: "linear" }}
-      />
-      
-      {/* Glow effect */}
-      <div className="absolute -inset-1 bg-gradient-to-r from-cyan-500 to-teal-400 rounded-xl opacity-0 group-hover:opacity-20 blur-xl transition-opacity duration-500" />
+const rotations = [-1.5, 2, -2, 1.5, -1, 2.5];
 
-      <div className="relative z-10 flex flex-col h-full">
-        {/* Header */}
-        <div className="mb-4">
-          {project.badge && (
-            <Badge className="mb-3">
-              {project.badge}
-            </Badge>
-          )}
-          <h3 className="text-xl font-bold text-white mb-2 group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-cyan-500 group-hover:to-teal-400 transition-all duration-300">
+const ProjectCard: React.FC<ProjectCardProps> = ({ project, index = 0 }) => {
+  const fileExt = project.techStack.includes('Python') || project.techStack.includes('YOLOv8') ? '.py' : '.tsx';
+  const fileName = `${project.id.replace(/[^a-z0-9]/g, '_')}${fileExt}`;
+
+  return (
+    <TerminalWindowCard
+      title={fileName}
+      index={index}
+      floatDelay={(index % 3) as 0 | 1 | 2}
+      initialRotate={rotations[index % rotations.length]}
+      badge={project.badge || 'PROJECT'}
+      className="h-full flex flex-col group cursor-pointer"
+    >
+      <div className="flex flex-col h-full">
+        {/* Title */}
+        <div className="mb-3">
+          <h3 className="font-mono text-base md:text-lg font-bold text-text-primary group-hover:text-cyan-bright transition-colors leading-tight">
             {project.title}
           </h3>
-          <p className="text-slate-400 text-sm mb-2">{project.date}</p>
+          <p className="font-mono text-[11px] text-text-mono-dim mt-1">{project.date}</p>
         </div>
 
-        {/* Description */}
-        <p className="text-slate-300 mb-4 leading-relaxed">
-          {project.description}
-        </p>
+        {/* Pseudo Code Snippet Block */}
+        <div className="mb-4 p-3 rounded-lg border border-glass-border bg-void/60 font-mono text-[11px] space-y-1">
+          <div className="text-text-mono-dim">
+            <span className="code-keyword">import</span> <span className="code-string">"{project.techStack[0] || 'React'}"</span>
+          </div>
+          <div className="text-text-mono-dim">
+            <span className="code-keyword">const</span> <span className="code-function">project</span> = <span className="code-keyword">new</span> Solution({'{'}
+          </div>
+          <div className="pl-3 text-text-secondary line-clamp-2">
+            description: <span className="code-string">"{project.description}"</span>
+          </div>
+          <div className="text-text-mono-dim">{'}'});</div>
+        </div>
 
-        {/* Tech Stack */}
-        <div className="mb-4 flex-grow">
-          <h4 className="text-white font-semibold mb-2">Tech Stack:</h4>
-          <div className="flex flex-wrap gap-2">
+        {/* Tech Stack Chips */}
+        <div className="mb-5 flex-grow">
+          <div className="font-mono text-[11px] text-text-mono-dim mb-2">
+            {'>'} tech_stack:
+          </div>
+          <div className="flex flex-wrap gap-1.5">
             {project.techStack.map((tech, idx) => (
               <span
                 key={idx}
-                className="px-3 py-1 bg-teal-400/20 text-teal-300 text-xs rounded-full border border-teal-400/30"
+                className="font-mono text-[10px] px-2 py-0.5 rounded border border-glass-border text-text-secondary group-hover:border-cyan-bright/30 transition-colors"
               >
                 {tech}
               </span>
@@ -71,17 +65,31 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project, index }) => {
         </div>
 
         {/* Buttons */}
-        <div className="flex gap-3 mt-auto">
+        <div className="flex gap-2 mt-auto pt-2 border-t border-glass-border">
           {project.githubUrl && (
-            <Button variant="primary" href={project.githubUrl} className="flex-1" icon={<Github size={16} />}>
-              View Code
-            </Button>
+            <TerminalButton
+              variant="primary"
+              href={project.githubUrl}
+              icon={<Github size={13} />}
+              className="flex-1 text-xs py-2"
+            >
+              VIEW_REPO
+            </TerminalButton>
+          )}
+          {project.liveUrl && project.liveUrl !== project.githubUrl && (
+            <TerminalButton
+              variant="secondary"
+              href={project.liveUrl}
+              icon={<ExternalLink size={13} />}
+              className="flex-1 text-xs py-2"
+            >
+              LIVE_DEMO
+            </TerminalButton>
           )}
         </div>
       </div>
-    </motion.div>
+    </TerminalWindowCard>
   );
 };
 
 export default ProjectCard;
-
